@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Habu Tailoring — Bespoke & Ready-to-Wear</title>
+  <meta name="description" content="Habu Tailoring — Professional bespoke tailoring. Browse styles, book fittings, and pay securely online." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#0f766e;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --bg:#f7f7fb;
+      --glass: rgba(255,255,255,0.8);
+      --radius:14px;
+      --max-width:1100px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#ffffff);color:#0f172a}
+    .container{max-width:var(--max-width);margin:32px auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    nav a{margin:0 10px;color:var(--muted);text-decoration:none}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;margin-top:24px}
+
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:0 6px 20px rgba(13,23,36,0.06);padding:20px}
+    .headline{font-size:28px;margin:4px 0 8px}
+    .sub{color:var(--muted);margin-bottom:16px}
+
+    /* styles gallery */
+    .styles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .style{border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .16s ease, box-shadow .16s ease;border:1px solid rgba(15,23,42,0.04)}
+    .style img{display:block;width:100%;height:190px;object-fit:cover}
+    .style .meta{padding:12px}
+    .style h4{margin:0 0 6px}
+    .style p{margin:0;color:var(--muted);font-size:13px}
+
+    /* booking form */
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted)}
+    input,select,textarea{padding:10px;border-radius:10px;border:1px solid #e6e9ee;background:white}
+    .row{display:flex;gap:10px}
+    .row .col{flex:1}
+    .btn{background:var(--accent);color:white;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn.secondary{background:transparent;color:var(--accent);border:1px solid rgba(15,118,110,0.12)}
+
+    /* booking sidebar */
+    .booking{position:sticky;top:28px}
+    .summary{display:flex;flex-direction:column;gap:8px}
+
+    footer{margin-top:36px;padding:18px;text-align:center;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr}
+      .styles-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:620px){
+      .styles-grid{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start}
+      .brand .text{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">HB</div>
+        <div class="text">
+          <div style="font-weight:700">Habu Tailoring</div>
+          <div style="font-size:12px;color:var(--muted)">Bespoke & Ready-to-Wear</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#styles">Styles</a>
+        <a href="#booking">Book</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <section>
+        <div class="card">
+          <div class="headline">Tailoring crafted to your style — book a fitting & pay online</div>
+          <div class="sub">Choose from classic, modern, or fusion looks. Every booking includes a consultation, fitting, and secure payment options.</div>
+
+          <h3 id="styles" style="margin-top:8px">Our signature styles</h3>
+          <p style="color:var(--muted);margin-bottom:12px">Tap a style to see details and book. Prices shown are starting prices.</p>
+
+          <div class="styles-grid" id="stylesGrid">
+            <!-- cards will be injected by JS -->
+          </div>
+        </div>
+
+        <div style="height:18px"></div>
+
+        <div class="card" id="about">
+          <h3 style="margin:0 0 8px">About Habu</h3>
+          <p class="sub">Habu Tailoring blends traditional craftsmanship with modern design. We offer made-to-measure garments, ready-to-wear alterations, and corporate uniform services.</p>
+          <ul style="margin:8px 0;color:var(--muted)">
+            <li>Free initial consultation for bespoke orders</li>
+            <li>Alterations and express services available</li>
+            <li>Secure online payments (Stripe / Paystack / PayPal — configurable)</li>
+          </ul>
+        </div>
+      </section>
+
+      <aside class="booking">
+        <div class="card">
+          <h4 style="margin:0 0 8px">Book a style</h4>
+          <form id="bookingForm">
+            <label for="styleSelect">Selected style</label>
+            <input id="styleSelect" name="style" readonly placeholder="Select a style from the gallery" />
+
+            <div class="row">
+              <div class="col">
+                <label for="date">Fitting date</label>
+                <input id="date" name="date" type="date" required />
+              </div>
+              <div class="col">
+                <label for="time">Time</label>
+                <input id="time" name="time" type="time" required />
+              </div>
+            </div>
+
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" placeholder="Jane Doe" required />
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" placeholder="+234 800 000 0000" required />
+
+            <label for="size">Measurements / Size notes</label>
+            <textarea id="size" name="size" rows="3" placeholder="Chest 38, Waist 32, Comments..."></textarea>
+
+            <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+              <button type="submit" class="btn" id="payBtn">Proceed to payment</button>
+              <button type="button" class="btn secondary" id="clearBtn">Clear</button>
+            </div>
+
+            <div id="formMsg" style="margin-top:8px;color:var(--muted);font-size:13px"></div>
+          </form>
+        </div>
+
+        <div style="height:12px"></div>
+        <div class="card">
+          <h4 style="margin:0 0 8px">Booking summary</h4>
+          <div class="summary">
+            <div id="summaryStyle">Style: —</div>
+            <div id="summaryDate">Date: —</div>
+            <div id="summaryClient">Client: —</div>
+            <div id="summaryPrice" style="font-weight:700">Price: —</div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer id="contact" class="card" style="margin-top:18px">
+      <div style="display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap">
+        <div>
+          <strong>Habu Tailoring</strong>
+          <div style="color:var(--muted);font-size:13px">Address: 12 Craft Lane, Lagos</div>
+          <div style="color:var(--muted);font-size:13px">Email: hello@habu.com</div>
+        </div>
+        <div style="text-align:right;color:var(--muted)">© <span id="year"></span> Habu Tailoring — Crafted with care</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal for style details -->
+  <div id="modal" style="position:fixed;inset:0;background:rgba(2,6,23,0.5);display:none;align-items:center;justify-content:center;padding:18px">
+    <div style="max-width:760px;width:100%" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:12px">
+        <div style="flex:1">
+          <h3 id="modalTitle" style="margin:0">Style</h3>
+          <p id="modalDesc" style="color:var(--muted)"></p>
+          <div id="modalPrice" style="font-weight:700;margin-top:8px"></div>
+          <div style="margin-top:12px">
+            <button class="btn" id="bookThis">Book this style</button>
+            <button class="btn secondary" id="closeModal">Close</button>
+          </div>
+        </div>
+        <div style="width:260px">
+          <img id="modalImg" src="" alt="" style="width:100%;height:220px;object-fit:cover;border-radius:8px"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const styles = [
+      {id:'classic-suit', title:'Classic Suit', price:18000, desc:'Two-piece tailored suit. Traditional cuts, quality wool blends. Ideal for work and formal events.', img:'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1000&q=60'},
+      {id:'modern-blazer', title:'Modern Blazer', price:12000, desc:'Slim-fit blazer with contemporary lapels. Great for smart-casual and presentations.', img:'https://images.unsplash.com/photo-1520975928504-7f7c6f3d2f3f?auto=format&fit=crop&w=1000&q=60'},
+      {id:'fusion-wear', title:'Fusion Wear', price:15000, desc:'A fusion of traditional textiles and modern cuts — bold, cultural, and contemporary.', img:'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1000&q=60'},
+      {id:'formal-women', title:'Formal (Women)', price:14000, desc:'Tailored dresses and suits for professional women. Precision cuts for a flattering silhouette.', img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1000&q=60'},
+      {id:'traditional', title:'Traditional Attire', price:10000, desc:'Made-to-measure traditional outfits with authentic fabrics and embroidery options.', img:'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1000&q=60'},
+      {id:'alteration', title:'Alteration & Repairs', price:3500, desc:'Quick alteration services for existing garments including hemming, tapering, and repairs.', img:'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1000&q=60'}
+    ];
+
+    const stylesGrid = document.getElementById('stylesGrid');
+    styles.forEach(s=>{
+      const el = document.createElement('div'); el.className='style'; el.dataset.id=s.id;
+      el.innerHTML = `\
+        <img src="${s.img}" alt="${s.title}"/>\
+        <div class="meta">\
+          <h4>${s.title}</h4>\
+          <p>From ₦${s.price.toLocaleString()}</p>\
+        </div>`;
+      el.addEventListener('click',()=>openModal(s));
+      stylesGrid.appendChild(el);
+    });
+
+    // Modal
+    const modal = document.getElementById('modal');
+    function openModal(s){
+      document.getElementById('modalTitle').textContent = s.title;
+      document.getElementById('modalDesc').textContent = s.desc;
+      document.getElementById('modalPrice').textContent = 'Starting price: ₦' + s.price.toLocaleString();
+      document.getElementById('modalImg').src = s.img;
+      modal.style.display = 'flex';
+      modal.dataset.selected = s.id;
+    }
+    document.getElementById('closeModal').addEventListener('click',()=>{ modal.style.display='none'; });
+
+    document.getElementById('bookThis').addEventListener('click',()=>{
+      const sel = modal.dataset.selected && styles.find(x=>x.id===modal.dataset.selected);
+      if(sel){
+        document.getElementById('styleSelect').value = sel.title;
+        document.getElementById('summaryStyle').textContent = 'Style: ' + sel.title;
+        document.getElementById('summaryPrice').textContent = 'Price: ₦' + sel.price.toLocaleString();
+      }
+      modal.style.display='none';
+    });
+
+    // Form logic
+    const form = document.getElementById('bookingForm');
+    const formMsg = document.getElementById('formMsg');
+    const summaryDate = document.getElementById('summaryDate');
+    const summaryClient = document.getElementById('summaryClient');
+    const summaryPrice = document.getElementById('summaryPrice');
+
+    document.getElementById('clearBtn').addEventListener('click',()=>{
+      form.reset();
+      document.getElementById('styleSelect').value='';
+      document.getElementById('summaryStyle').textContent='Style: —';
+      document.getElementById('summaryPrice').textContent='Price: —';
+      document.getElementById('summaryClient').textContent='Client: —';
+      summaryDate.textContent='Date: —';
+      formMsg.textContent='';
+    });
+
+    form.addEventListener('submit',async (e)=>{
+      e.preventDefault();
+      formMsg.style.color='';
+
+      const data = new FormData(form);
+      const selectedStyle = data.get('style');
+      if(!selectedStyle){ formMsg.style.color='crimson'; formMsg.textContent='Please select a style from the gallery first.'; return; }
+
+      const date = data.get('date');
+      const time = data.get('time');
+      const name = data.get('name');
+      const email = data.get('email');
+      const phone = data.get('phone');
+
+      // find price from styles array
+      const styleObj = styles.find(s=>s.title===selectedStyle);
+      const amount = styleObj ? styleObj.price : 5000;
+
+      // update summary
+      document.getElementById('summaryStyle').textContent = 'Style: ' + selectedStyle;
+      summaryDate.textContent = 'Date: ' + (date || '—') + ' ' + (time || '');
+      summaryClient.textContent = 'Client: ' + name + ' — ' + phone;
+      summaryPrice.textContent = 'Price: ₦' + amount.toLocaleString();
+
+      formMsg.style.color = 'var(--muted)';
+      formMsg.textContent = 'Creating secure payment...';
+
+      // Simulated payment flow
+      // NOTE: Replace with real payment integration (Stripe / Paystack / PayPal) server-side create-session
+      try{
+        // Here we open a mock payment popup. In production, call your server to create a payment session and redirect.
+        await simulatePayment({name,email,phone,amount,style:selectedStyle});
+        formMsg.style.color='green'; formMsg.textContent='Payment completed and booking confirmed! We will contact you to confirm fitting details.';
+      }catch(err){
+        formMsg.style.color='crimson'; formMsg.textContent='Payment failed or cancelled. Please try again.';
+      }
+    });
+
+    // Mock payment routine to simulate a payment flow (for demo only)
+    function simulatePayment({name,email,phone,amount,style}){
+      return new Promise((res,rej)=>{
+        // show a simple confirm dialog as a mock payment
+        const ok = confirm(`You are about to pay ₦${amount.toLocaleString()} for "${style}". Click OK to simulate successful payment.`);
+        if(ok) setTimeout(()=>res(true),700);
+        else setTimeout(()=>rej(new Error('User cancelled')),200);
+      });
+    }
+
+    // NOTE for integration:
+    /*
+      Real payment integration (recommended flow):
+      1. Create a server endpoint that creates a payment session with your chosen provider (Stripe Checkout, Paystack, or PayPal).
+      2. From this page, POST booking details to that endpoint and return session URL or ID.
+      3. Redirect user to provider checkout.
+      4. Use webhooks on your server to listen for payment success events and mark bookings confirmed.
+
+      Example (Stripe Checkout):
+      - Client: POST /create-checkout-session with booking info
+      - Server: use stripe.sessions.create(...) -> returns session.id
+      - Client: stripe.redirectToCheckout({ sessionId: session.id })
+    */
+
+  </script>
+</body>
+</html>
